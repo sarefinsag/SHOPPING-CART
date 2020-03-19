@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <div class="cart">
+            <div class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                     </div>
+
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="phn-minus"class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="phn-cart" type="text" class="form-control text-center" value="1">
+                           <button id="phn-plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$ <span id="phn-amount">1219</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="case-minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="case-cart" type="text" class="form-control text-center" value="1">
+                           <button id="case-plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
+
+                        </div>
+                        <h5>$ <span id="case-amount">59</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal:</h5>
+                        <h5>Tax:</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5>$ <span id="sub-total">1,278</span></h5>
+                        <h5>$0</h5>
+                        <h5>$ <span id="total">1,278</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button type="button" class="btn btn-success check-out">Check Out</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <script>
+
+      //the plus btn of phn cart
+      const phnPlusBtn = document.getElementById("phn-plus");
+      phnPlusBtn.addEventListener("click", function(){
+         addPhnNumberCart("phn-cart", 1);
+         const phnAmountCart = phnCartAmount("phn-amount", 1219);
+
+         const caseAmountCart = document.getElementById("case-amount").innerText;
+         const caseAmountNumber = parseFloat(caseAmountCart);
+         document.getElementById("sub-total").innerText = SubtotalAmountUpdate(phnAmountCart, caseAmountNumber);
+
+         totalAmountOK("total", "sub-total");
+
+      })
+
+      //the minus btn of phn cart
+      const phnMinusBtn = document.getElementById("phn-minus");
+      phnMinusBtn.addEventListener("click", function(){
+         addPhnNumberCart("phn-cart", -1);
+         const phnAmountCart = phnCartAmount("phn-amount", -1219);
+
+         const caseAmountCart = document.getElementById("case-amount").innerText;
+         const caseAmountNumber = parseFloat(caseAmountCart);
+         document.getElementById("sub-total").innerText = SubtotalAmountUpdate(phnAmountCart, caseAmountNumber);
+
+         totalAmountOK("total", "sub-total");
+      })
+      
+      //the plus btn of case cart
+      const casePlusBtn = document.getElementById("case-plus");
+      casePlusBtn.addEventListener("click", function(){
+         addPhnNumberCart("case-cart", 1);
+         const caseAmountCart = phnCartAmount("case-amount", 59);
+
+         const phnCart = document.getElementById("phn-amount").innerText;
+         const phnAmountNumber = parseFloat(phnCart);
+         document.getElementById("sub-total").innerText = SubtotalAmountUpdate(caseAmountCart, phnAmountNumber);
+
+         totalAmountOK("total", "sub-total");
+      })
+
+      //the minus btn of case cart
+      const caseMinusBtn = document.getElementById("case-minus");
+      caseMinusBtn.addEventListener("click", function(){
+         addPhnNumberCart("case-cart", -1);
+         const caseAmountCart = phnCartAmount("case-amount", -59);
+
+         const phnCart = document.getElementById("phn-amount").innerText;
+         const phnAmountNumber = parseFloat(phnCart);
+         document.getElementById("sub-total").innerText = SubtotalAmountUpdate(caseAmountCart, phnAmountNumber);
+
+         totalAmountOK("total", "sub-total");
+      })
+
+       function addPhnNumberCart(id, numberGive){
+      const inPhnNumber = document.getElementById(id).value;
+         const addPhnNumber = parseFloat(inPhnNumber);
+         const totalPhnNumber = addPhnNumber + numberGive;
+         if(totalPhnNumber>=0){
+            document.getElementById(id).value = totalPhnNumber;
+            return totalPhnNumber;
+         }
+         else return 0;
+       }
+
+      function phnCartAmount(id, numberGive){
+         const phnGetNum = document.getElementById(id).innerText;
+         const numberPhn = parseFloat(phnGetNum);
+         const totalAmount = numberPhn + numberGive;
+         if(totalAmount>=0){
+            document.getElementById(id).innerText = totalAmount;
+            return totalAmount;
+         }
+         else return 0;
+      }
+       
+       //it works for the sub total area
+
+      function SubtotalAmountUpdate(first, second){
+         const SubtotalAmount = first + second;
+         return SubtotalAmount;
+      }
+       
+
+       //it works for final amount of shopping cart
+
+      function totalAmountOK(A, B){
+         document.getElementById(A).innerText = document.getElementById(B).innerText;
+      }
+      
+   </script>
+
+</body>
+</html>
